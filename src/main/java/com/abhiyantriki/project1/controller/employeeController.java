@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.abhiyantriki.project1.entity.employee;
 import com.abhiyantriki.project1.service.employeeService;
+import com.abhiyantriki.project1.service.roleService;
 
 @Controller
 @RequestMapping("/employees")
@@ -21,6 +22,9 @@ import com.abhiyantriki.project1.service.employeeService;
 public class employeeController {
 	@Autowired
 	employeeService empService;
+
+	@Autowired
+	roleService roleService;
 	
 	// add
 	
@@ -45,8 +49,9 @@ public class employeeController {
 	
 	// show employee register form
 	@GetMapping("/register")
-	public String showEmployee()
+	public String showEmployee(Model model)
 	{
+		model.addAttribute("roles", roleService.getRoleNames());
 		return "employeeRegister";
 	}
 	//delete Employee
@@ -63,6 +68,20 @@ public class employeeController {
 		}
 	}
 	
+	// delete Employee via GET (for link-based deletion)
+	@GetMapping("/delete/{id}")
+	public String deleteEmployeeGet(@PathVariable String id, RedirectAttributes redirectAttributes) {
+		boolean status = empService.deleteEmployee(id);
+		
+		if (status) {
+			redirectAttributes.addFlashAttribute("message", "Employee deleted successfully.");
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Employee not found.");
+		}
+		
+		return "redirect:/roles/maker";
+	}
+	
 	
 	
 	
@@ -72,6 +91,7 @@ public class employeeController {
 	{
 	    employee emp = empService.getEmployeeById(id);
 	    model.addAttribute("employee", emp);
+	    model.addAttribute("roles", roleService.getRoleNames());
 	    return "update";
 	}
 

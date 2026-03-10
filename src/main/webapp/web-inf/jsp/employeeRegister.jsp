@@ -68,6 +68,22 @@ input[type="submit"]:hover{
     background:#45a049;
 }
 
+a.back-link{
+    display:block;
+    text-align:center;
+    background:#999;
+    color:white;
+    padding:10px;
+    cursor:pointer;
+    border-radius:5px;
+    text-decoration:none;
+    margin-top:15px;
+}
+
+a.back-link:hover{
+    background:#777;
+}
+
 </style>
 
 </head>
@@ -79,7 +95,7 @@ input[type="submit"]:hover{
 <h1>Employee Register</h1>
 <p>Please Enter Employee Details</p>
 
-<form action="/employees/add" method="post">
+<form action="${pageContext.request.contextPath}/employees/add" method="post">
 
 <label>Employee ID</label>
 <input type="text" name="id" required>
@@ -99,6 +115,9 @@ input[type="submit"]:hover{
 <label>Mobile Number</label>
 <input type="text" name="mobileNo" required>
 
+<label>Date of Birth</label>
+<input type="text" name="dob" placeholder="YYYY-MM-DD">
+
 <label>Address</label>
 <input type="text" name="address">
 
@@ -114,9 +133,19 @@ input[type="submit"]:hover{
 <label>Pincode</label>
 <input type="text" name="pinCode">
 
+<label>Role</label>
+<select name="role" required>
+<option value="">-- Select Role --</option>
+<c:forEach var="role" items="${roles}">
+    <option value="${role}">${role}</option>
+</c:forEach>
+</select>
+
 <input type="submit" value="Add Employee">
 
 </form>
+
+<a href="${pageContext.request.contextPath}/roles/maker" class="back-link">← Back to Role Maker</a>
 
 </div>
 

@@ -51,6 +51,11 @@ public class employeeService {
 		return employeeRepository.getEmployeeById(id);
 	}
 	
+	// Get Employees by Role
+	public List<employee> getEmployeesByRole(String role) {
+		return employeeRepository.getEmployeesByRole(role);
+	}
+	
 	
 }
 

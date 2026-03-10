@@ -26,6 +26,8 @@ public class employee {
 	
 	private String pinCode;
 	
+	private String role;
+	
 
 	public String getId() {
 		return id;
@@ -123,5 +125,12 @@ public class employee {
 		this.pinCode = pinCode;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 }

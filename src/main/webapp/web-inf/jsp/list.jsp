@@ -87,6 +87,18 @@ a[href*="edit"]:hover{
     background:#45a049;
 }
 
+a.role-maker-btn{
+    display:block;
+    width:200px;
+    margin:20px auto 0;
+    text-align:center;
+    padding:10px;
+    background:#667eea;
+    color:white;
+    border-radius:5px;
+    text-decoration:none;
+}
+
 </style>
 
 </head>
@@ -113,6 +125,7 @@ a[href*="edit"]:hover{
 <th>State</th>
 <th>Country</th>
 <th>Pincode</th>
+<th>Role</th>
 <th>Action</th>
 </tr>
 
@@ -130,6 +143,7 @@ a[href*="edit"]:hover{
 <td>${emp.state}</td>
 <td>${emp.country}</td>
 <td>${emp.pinCode}</td>
+<td>${emp.role}</td>
 
 <td>
 <a href="${pageContext.request.contextPath}/employees/edit/${emp.id}">Update</a>
@@ -142,5 +156,6 @@ a[href*="edit"]:hover{
 
 <a href="${pageContext.request.contextPath}/employees/register" class="add-btn">Add New Employee</a>
 
+<a href="${pageContext.request.contextPath}/roles/maker" class="role-maker-btn">← Back to Role Maker</a>
 </body>
 </html>

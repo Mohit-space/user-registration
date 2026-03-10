@@ -69,6 +69,22 @@ input[type="submit"]:hover{
     background:#0056b3;
 }
 
+a.back-link{
+    display:block;
+    text-align:center;
+    background:#999;
+    color:white;
+    padding:10px;
+    cursor:pointer;
+    border-radius:5px;
+    text-decoration:none;
+    margin-top:15px;
+}
+
+a.back-link:hover{
+    background:#777;
+}
+
 </style>
 
 </head>
@@ -107,9 +123,18 @@ input[type="submit"]:hover{
 
 <input type="text" name="pinCode" value="${employee.pinCode}" placeholder="Pin Code">
 
+<select name="role" required>
+<option value="">-- Select Role --</option>
+<c:forEach var="role" items="${roles}">
+    <option value="${role}" <c:if test='${employee.role == role}'>selected</c:if>>${role}</option>
+</c:forEach>
+</select>
+
 <input type="submit" value="Update Employee">
 
 </form>
+
+<a href="${pageContext.request.contextPath}/roles/maker" class="back-link">← Back to Role Maker</a>
 
 </body>
 </html>

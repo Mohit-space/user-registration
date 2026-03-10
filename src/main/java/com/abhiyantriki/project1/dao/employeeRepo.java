@@ -44,6 +44,13 @@ public class employeeRepo {
 
         throw new IllegalArgumentException("DOB format is invalid. Use YYYY-MM-DD or DD/MM/YYYY.");
     }
+
+    private String normalizeRole(String roleValue) {
+        if (roleValue == null || roleValue.isBlank()) {
+            return "Software Developer";
+        }
+        return roleValue.trim();
+    }
 	
 	
 	// create 
@@ -54,7 +61,7 @@ public class employeeRepo {
 		try {
 			Connection conn = bean.getConnectionobj();
 			
-			String sql = "insert into employee (firstName, secondName, lastName, email, mobileNo, dob, address, city, state, country, pinCode) values(?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into employee (firstName, secondName, lastName, email, mobileNo, dob, address, city, state, country, pinCode, roles) values(?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, emp.getFirstName());
@@ -68,6 +75,7 @@ public class employeeRepo {
             ps.setString(9, emp.getState());
             ps.setString(10, emp.getCountry());
             ps.setString(11, emp.getPinCode());
+            ps.setString(12, normalizeRole(emp.getRole()));
            
 
             int result = ps.executeUpdate();
@@ -118,6 +126,7 @@ public List<employee>getEmployees()
             emp.setState(rs.getString("state"));
             emp.setCountry(rs.getString("country"));
             emp.setPinCode(rs.getString("pinCode"));
+            emp.setRole(rs.getString("roles"));
             
 
             list.add(emp);
@@ -145,7 +154,7 @@ public employee updateEmployee(employee emp) {
 
         Connection conn = bean.getConnectionobj();
 
-        String sql = "UPDATE employee SET firstName=?, secondName=?, lastName=?, email=?, mobileNo=?, dob=?, address=?, city=?, state=?, country=?, pinCode=? WHERE id=?";
+        String sql = "UPDATE employee SET firstName=?, secondName=?, lastName=?, email=?, mobileNo=?, dob=?, address=?, city=?, state=?, country=?, pinCode=?, roles=? WHERE id=?";
         PreparedStatement ps = conn.prepareStatement(sql);
 
         ps.setString(1, emp.getFirstName());
@@ -159,7 +168,8 @@ public employee updateEmployee(employee emp) {
         ps.setString(9, emp.getState());
         ps.setString(10, emp.getCountry());
         ps.setString(11, emp.getPinCode());
-        ps.setString(12, emp.getId());
+        ps.setString(12, normalizeRole(emp.getRole()));
+        ps.setString(13, emp.getId());
 
        int result =  ps.executeUpdate();
        if(result>0) {
@@ -201,6 +211,7 @@ public employee updateEmployee(employee emp) {
                 emp.setState(rs.getString("state"));
                 emp.setCountry(rs.getString("country"));
                 emp.setPinCode(rs.getString("pinCode"));
+                emp.setRole(rs.getString("roles"));
             }
             conn.close();
         } catch (Exception e) {
@@ -232,6 +243,43 @@ public boolean deleteEmployee(String id){
 	return status;
     }
 
+// Get Employees by Role
+public List<employee> getEmployeesByRole(String role) {
+	List<employee> list = new ArrayList<>();
+	
+	try {
+		Connection conn = bean.getConnectionobj();
+        String sql = "SELECT * FROM employee WHERE roles = ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, role);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			employee emp = new employee();
+			emp.setId(rs.getString("id"));
+			emp.setFirstName(rs.getString("firstName"));
+			emp.setSecondName(rs.getString("secondName"));
+			emp.setLastName(rs.getString("lastName"));
+			emp.setEmail(rs.getString("email"));
+			emp.setMobileNo(rs.getString("mobileNo"));
+			emp.setDob(rs.getString("dob"));
+			emp.setAddress(rs.getString("address"));
+			emp.setCity(rs.getString("city"));
+			emp.setState(rs.getString("state"));
+			emp.setCountry(rs.getString("country"));
+			emp.setPinCode(rs.getString("pinCode"));
+            emp.setRole(rs.getString("roles"));
+			
+			list.add(emp);
+		}
+		conn.close();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	return list;
+}
 
 }
 
